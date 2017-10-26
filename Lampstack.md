@@ -125,6 +125,16 @@
         `GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED  BY 'password';`
         `FLUSH PRIVILEGES;` (so that mySQL knows of changes we've made)
         `exit`
+
+  #########START HERE MEGAN 
+
+
+
+
+
+
+  
+        
 ### 2) Install Wordpress
 - Install PHP Thumbnail module: `sudo yum install php-gd`
 - Restart apache so it recogizes new module: `sudo service httpd restart` 
@@ -141,15 +151,15 @@ wget http://wordpress.org/latest.tar.gz`
 - move apache root where you moved wp: `cd /var/www/html`
 - add sample config file: `cp wp-config-sample.php wp-config.php`
 - edit config file in vi: `vi wp-config.php`
-        - Update the following to you specifics:
-            /** The name of the database for WordPress */
-                define('DB_NAME', <span style="color:red">'wordpress'</span>));
+        - Update the following to your specifics:
+            - /** The name of the database for WordPress */
+                define('DB_NAME', "color:red">'wordpress'));
 
             /** MySQL database username */
-                define('DB_USER', <span style="color:red">'wordpressuser'</span>));
+                define('DB_USER', 'wordpressuser'));
 
             /** MySQL database password */
-                define('DB_PASSWORD', <span style="color:red">'password'</span>);
+                define('DB_PASSWORD', 'password');
 - Test Wordpress
 - Create Another Snapshot call it WordPressImage
 ---
