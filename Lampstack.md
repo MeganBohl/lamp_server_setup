@@ -77,18 +77,18 @@
 - ssh root@--.--.--.--
 - https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-centos-7
 ---
-####Step One — Install Apache
+#### Step One — Install Apache
 - `sudo yum install httpd`
 - Once it installs, you can start Apache on your VPS: `sudo systemctl start httpd.service`
 - spot check on your web address: http://your_server_IP_address/
     - Find your web address in terminal: `ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'`
-####Step Two — Install MySQL (MariaDB)
+#### Step Two — Install MySQL (MariaDB)
 - use yum to acquire & install: `sudo yum install mariadb-server mariadb`
 - start it: `sudo systemctl start mariadb`
 - run security script: `sudo mysql_secure_installation`
 - enable mariadb on startup: `sudo systemctl enable mariadb.service`
 
-####Step Three — Install PHP
+#### Step Three — Install PHP
 - `sudo yum install php php-mysql`
 - restart apache to run w/PHP: `sudo systemctl restart httpd.service`
 - Optional Modules (research script to add all) `yum search php-`  install: `yum install package 1`
