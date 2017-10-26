@@ -60,7 +60,7 @@
 - Copy the public to your new server 
 - Ensure you can login to your new user with the SSH key -YES
 
-- Disable the root login
+
 - Add Public Key to New Remote User
     - as root, go to new user dir: `su - megan`
     - Create new directory .ssh,restrict permissions:
@@ -71,6 +71,11 @@
         ssh will paste into vi, hit "i" for insert mode, esc i mode, :x
     -restrict permissions of autorized keys file: `chmod 600 .ssh/authorized_keys`
     - `exit` once to root
+    - Disable the root ssh login (Configure SSH Daemon)
+        `vi /etc/ssh/sshd_config`
+            Change to: `PermitRootLogin no`
+            reload: `systemctl reload sshd` (no output)
+
 ---
 
 ## Part III Install Apache, MySQL, and Php
@@ -104,8 +109,7 @@
 ---
 
 ## Part IV Creating a Snapshot of your image
-- Megan original:Take snapshot on digital ocean of completed Lamp stack Titled:               "centos-512mb-Lampsetup"
-David's instruction:
+
 - Using the terminal shutdown your server
 - Using the Digital Ocean Interface Create a Snapshot of Your Server
 - Name it LAMPwithKeys
@@ -113,7 +117,39 @@ David's instruction:
 
 ## Part V Install Wordpress
 - Guide: https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-on-centos-7
-- Do you need wget ? yum install wget
+### 1) Create MySQL DB for Wordpress
+- Log into MySQL's root: `mysql -u root -p`
+    in the Db: (all commands must end with;)
+        `CREATE DATABASE wordpress;`
+        `CREATE USER wordpressuser@localhost IDENTIFIED BY 'password';`
+        `GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED  BY 'password';`
+        `FLUSH PRIVILEGES;` (so that mySQL knows of changes we've made)
+        `exit`
+### 2) Install Wordpress
+- Install PHP Thumbnail module: `sudo yum install php-gd`
+- Restart apache so it recogizes new module: `sudo service httpd restart` 
+- `sudo yum install wget`
+- download & install most recent version of wordpress: 
+`cd ~
+wget http://wordpress.org/latest.tar.gz`
+- Extract files: `tar xzvf latest.tar.gz`
+    -  There will now be a directory called "wordpress" in your home directory
+- Transfer unpacked files to Apache's document root: `sudo rsync -avP ~/wordpress/ /var/www/html/`
+- Create folder for wp to store files: `mkdir /var/www/html/wp-content/uploads`
+- Assign correct ownerships & permissions: `sudo chown -R apache:apache /var/www/html/*`
+### 3)  Configure WordPress
+- move apache root where you moved wp: `cd /var/www/html`
+- add sample config file: `cp wp-config-sample.php wp-config.php`
+- edit config file in vi: `vi wp-config.php`
+        - Update the following to you specifics:
+            /** The name of the database for WordPress */
+                define('DB_NAME', <span style="color:red">'wordpress'</span>));
+
+            /** MySQL database username */
+                define('DB_USER', <span style="color:red">'wordpressuser'</span>));
+
+            /** MySQL database password */
+                define('DB_PASSWORD', <span style="color:red">'password'</span>);
 - Test Wordpress
 - Create Another Snapshot call it WordPressImage
 ---
