@@ -88,10 +88,12 @@
 - spot check on your web address: http://your_server_IP_address/
     - Find your web address in terminal: `ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'`
 #### Step Two — Install MySQL (MariaDB)
-- use yum to acquire & install: `sudo yum install mariadb-server mariadb`
+- use yum to acquire & install: `sudo yum install mariadb-server`
 - start it: `sudo systemctl start mariadb`
+- show status: `sudo systemctl status mariadb` (output should contain: ""Active: active (running)` and the      final line")
 - run security script: `sudo mysql_secure_installation`
-- enable mariadb on startup: `sudo systemctl enable mariadb.service`
+- enable mariadb on startup: `sudo systemctl enable mariadb`
+- Test installation: `mysqladmin -u root -p version` (output should show version,etc.)
 
 #### Step Three — Install PHP
 - `sudo yum install php php-mysql`
