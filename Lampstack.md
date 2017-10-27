@@ -128,15 +128,6 @@
         `FLUSH PRIVILEGES;` (so that mySQL knows of changes we've made)
         `exit`
 
-  #########START HERE MEGAN 
-
-
-
-
-
-
-  
-        
 ### 2) Install Wordpress
 - Install PHP Thumbnail module: `sudo yum install php-gd`
 - Restart apache so it recogizes new module: `sudo service httpd restart` 
@@ -152,13 +143,14 @@ wget http://wordpress.org/latest.tar.gz`
 ### 3)  Configure WordPress
 - move apache root where you moved wp: `cd /var/www/html`
 - add sample config file: `cp wp-config-sample.php wp-config.php`
-- edit config file in vi: `vi wp-config.php`
+    - if nano not installed: `sudo yum install nano`
+- edit config file in nano: `nano wp-config.php`
         - Update the following to your specifics:
             - /** The name of the database for WordPress */
-                define('DB_NAME', "color:red">'wordpress'));
+                define('DB_NAME', 'wordpress'));
 
             /** MySQL database username */
-                define('DB_USER', 'wordpressuser'));
+                define('DB_USER', **'wordpressuser'**));
 
             /** MySQL database password */
                 define('DB_PASSWORD', 'password');
