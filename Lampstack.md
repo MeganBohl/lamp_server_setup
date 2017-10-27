@@ -145,15 +145,18 @@ wget http://wordpress.org/latest.tar.gz`
 - add sample config file: `cp wp-config-sample.php wp-config.php`
     - if nano not installed: `sudo yum install nano`
 - edit config file in nano: `nano wp-config.php`
+---
         - Update the following to your specifics:
-            - /** The name of the database for WordPress */
+
+        `- /** The name of the database for WordPress */
                 define('DB_NAME', 'wordpress'));
 
             /** MySQL database username */
                 define('DB_USER', **'wordpressuser'**));
 
             /** MySQL database password */
-                define('DB_PASSWORD', 'password');
+                define('DB_PASSWORD', 'password');`
+
 - Test Wordpress
 - Create Another Snapshot call it WordPressImage
 ---
