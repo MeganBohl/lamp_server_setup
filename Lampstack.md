@@ -164,6 +164,14 @@ wget http://wordpress.org/latest.tar.gz`
 ## Part VI Add Encryption with OpenSSL
 - Guide: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
 - The guide is for Ubuntu, but should work for CentOS
+    Create the SSL Certificate
+    1) Create a self-signed key and certificate pair with OpenSSL in a single command:
+        `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`
+    - had to create /private file
+    - files will be held in:  /etc/ssl
+    2) create strong Diffie-Hellman group to be held in /etc/ssl/certs/dhparam.pem `sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 20481`
+    3) Configure Apache to Use SSL
+        - Create Apache Config Snippet w/Strong Encryption Stngs: `sudo nano /etc/apache2/conf-available/ssl-params.conf`
 - Create a final snapshot called WPwithEncryption
 ---
 
