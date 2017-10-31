@@ -223,16 +223,9 @@ ssh megan@45.55.224.80
     # Requires Apache >= 2.4.11
     # SSLSessionTickets Off```
 
+## START HERE   (Recommended) Modify the Unencrypted Virtual Host File to Redirect to HTTPS https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7
 
 
------BEGIN DH PARAMETERS-----
-MIIBCAKCAQEAwyt9aYPO8IF1vekdvj52I196y0RcB1IYApYut/Vm57C/NkQXtmuf
-/9KMuu5ubyfpoEjdAbf80eajHkfO6X++1Yox85XmMC4Wy8EAgInzHRHAS5tt9qjF
-wQHIz4cz+364xICmfyxZoXlUsv67kX6YKjfdRjtEwccEG+djFkqWsfykZE4P+Uzq
-gPbSWCU6jblscC1kULwkiH7bHz+rJU8jz2/IPi7+mzYE97miS/uhq4ZhNViSIjq3
-7Qa30ifru/mF/zxQAQZUNHKci9YKSYztl6h+Qdyqn4+n5LgpaQiDOEbVEC9x0Ikr
-CyRfFGiwm+rU7uZzxywBwq4vjG3QPw0tWwIBAg==
------END DH PARAMETERS-----
 
 - Create a final snapshot called WPwithEncryption
 ---
