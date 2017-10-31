@@ -162,7 +162,7 @@ wget http://wordpress.org/latest.tar.gz`
 ---
 
 ## Part VI Add Encryption with OpenSSL
-- Guide: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
+- Guide: https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7
 
 ssh megan@45.55.224.80 
     `sudo yum install httpd`
@@ -170,19 +170,70 @@ ssh megan@45.55.224.80
 - Install mod_ssl, an Apache module that provides support for SSL encryption, with the yum command:
     `sudo yum install mod_ssl`
         - ERROR:  Error downloading packages:
-  1:mod_ssl-2.4.6-67.el7.centos.6.x86_64: [Errno 5] [Errno 12] Cannot allocate memory
+  1:mod_ssl-2.4.6-67.el7.centos.6.x86_64: [Errno 5] [Errno 12] Cannot allocate memory  (HAD TO UPGRADE TO A 10MB DROPLET)
 - create a new directory to store our private key: 
 `sudo mkdir /etc/ssl/private`
+- Must be kept private, modify the permissions to make sure only the root user has access:
+`sudo chmod 700 /etc/ssl/private`
+- create the SSL key and certificate files with openssl:
+    `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`
+- create strong Diffie-Hellman group (public-key cryptography protocol that allows two devices to       establish a shared secret over an unsecure communications channel) to be held in:
+    `sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048`
+- Since the version of Apache that ships with CentOS 7 does not include the SSLOpenSSLConfCmd directive, we will have to manually append the generated file to the end of our self-signed certificate. To do this, type:
+ `cat /etc/ssl/certs/dhparam.pem | sudo tee -a /etc/ssl/certs/apache-selfsigned.crt`
+- Open Apache's SSL configuration file in your text editor with root privileges:
+`sudo nano /etc/httpd/conf.d/ssl.conf`
+    
+    - Find the section that begins with <VirtualHost _default_:443>
+    `/etc/httpd/conf.d/ssl.conf
+    <VirtualHost _default_:443>
+    . . .
+    DocumentRoot "/var/www/165.227.67.40.com/public_html"
+    ServerName www.165.227.67.40.com:443`
 
-- The guide is for Ubuntu, but should work for CentOS
-    Create the SSL Certificate 
-    1) Create a self-signed key and certificate pair with OpenSSL in a single command:
-        `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`
-    - had to create /private file
-    - files will be held in:  /etc/ssl
-    2) create strong Diffie-Hellman group to be held in /etc/ssl/certs/dhparam.pem `sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 20481`
-    3) Configure Apache to Use SSL
-        - Create Apache Config Snippet w/Strong Encryption Stngs: `sudo nano /etc/apache2/conf-available/ssl-params.conf`
+- Next, find these and comment out:
+`# SSLProtocol all -SSLv2`
+`# SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA`
+
+- change these:
+            `/etc/httpd/conf.d/ssl.conf`
+    `SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt`
+    `SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key`
+
+- Paste in settings after </Virtual Host>
+    . . .
+
+    ```# Begin copied text
+    # from https://cipherli.st/
+    # and https://raymii.org/s/tutorials/Strong_SSL_Security_On_Apache2.html
+
+    SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+    SSLProtocol All -SSLv2 -SSLv3
+    SSLHonorCipherOrder On
+    # Disable preloading HSTS for now.  You can use the commented out header line that includes
+    # the "preload" directive if you understand the implications.
+    #Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains; preload"
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains"
+    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options nosniff
+    # Requires Apache >= 2.4
+    SSLCompression off 
+    SSLUseStapling on 
+    SSLStaplingCache "shmcb:logs/stapling-cache(150000)" 
+    # Requires Apache >= 2.4.11
+    # SSLSessionTickets Off```
+
+
+
+-----BEGIN DH PARAMETERS-----
+MIIBCAKCAQEAwyt9aYPO8IF1vekdvj52I196y0RcB1IYApYut/Vm57C/NkQXtmuf
+/9KMuu5ubyfpoEjdAbf80eajHkfO6X++1Yox85XmMC4Wy8EAgInzHRHAS5tt9qjF
+wQHIz4cz+364xICmfyxZoXlUsv67kX6YKjfdRjtEwccEG+djFkqWsfykZE4P+Uzq
+gPbSWCU6jblscC1kULwkiH7bHz+rJU8jz2/IPi7+mzYE97miS/uhq4ZhNViSIjq3
+7Qa30ifru/mF/zxQAQZUNHKci9YKSYztl6h+Qdyqn4+n5LgpaQiDOEbVEC9x0Ikr
+CyRfFGiwm+rU7uZzxywBwq4vjG3QPw0tWwIBAg==
+-----END DH PARAMETERS-----
+
 - Create a final snapshot called WPwithEncryption
 ---
 
