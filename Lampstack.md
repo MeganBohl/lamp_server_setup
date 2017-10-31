@@ -163,8 +163,19 @@ wget http://wordpress.org/latest.tar.gz`
 
 ## Part VI Add Encryption with OpenSSL
 - Guide: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
+
+ssh megan@45.55.224.80 
+    `sudo yum install httpd`
+    `sudo systemctl enable httpd.service`
+- Install mod_ssl, an Apache module that provides support for SSL encryption, with the yum command:
+    `sudo yum install mod_ssl`
+        - ERROR:  Error downloading packages:
+  1:mod_ssl-2.4.6-67.el7.centos.6.x86_64: [Errno 5] [Errno 12] Cannot allocate memory
+- create a new directory to store our private key: 
+`sudo mkdir /etc/ssl/private`
+
 - The guide is for Ubuntu, but should work for CentOS
-    Create the SSL Certificate
+    Create the SSL Certificate 
     1) Create a self-signed key and certificate pair with OpenSSL in a single command:
         `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`
     - had to create /private file
