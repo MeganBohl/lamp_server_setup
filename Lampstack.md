@@ -121,12 +121,15 @@
 - Guide: https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-on-centos-7
 ### 1) Create MySQL DB for Wordpress
 - Log into MySQL's root: `mysql -u root -p`
+
+
     in the Db: (all commands must end with;)
+```
         `CREATE DATABASE wordpress;`
         `CREATE USER wordpressuser@localhost IDENTIFIED BY 'password';`
         `GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED  BY 'password';`
         `FLUSH PRIVILEGES;` (so that mySQL knows of changes we've made)
-        `exit`
+        `exit```
 
 ### 2) Install Wordpress
 - Install PHP Thumbnail module: `sudo yum install php-gd`
