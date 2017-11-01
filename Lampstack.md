@@ -222,8 +222,13 @@ ssh megan@45.55.224.80
     SSLStaplingCache "shmcb:logs/stapling-cache(150000)" 
     # Requires Apache >= 2.4.11
     # SSLSessionTickets Off```
-
-## START HERE   (Recommended) Modify the Unencrypted Virtual Host File to Redirect to HTTPS https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7
+    
+- Modify the Unencrypted Virtual Host File to Redirect to HTTPS 
+    `sudo nano /etc/httpd/conf.d/non-ssl.conf`
+    - redirect all traffic to be SSL encrypted, create and open a file ending in .conf in the ```/etc/httpd/conf.d directory:
+<VirtualHost *:80>
+        ServerName www.example.com
+        Redirect "/" "https://www.example.com/"```
 
 
 
