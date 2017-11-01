@@ -124,7 +124,7 @@
 
 
     in the Db: (all commands must end with;)
-```
+``
         `CREATE DATABASE wordpress;`
         `CREATE USER wordpressuser@localhost IDENTIFIED BY 'password';`
         `GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED  BY 'password';`
