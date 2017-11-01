@@ -130,7 +130,7 @@
         `GRANT ALL PRIVILEGES ON wordpress.* TO wordpressuser@localhost IDENTIFIED  BY 'password';`
         `FLUSH PRIVILEGES;` (so that mySQL knows of changes we've made)
         `exit```
-
+---
 ### 2) Install Wordpress
 - Install PHP Thumbnail module: `sudo yum install php-gd`
 - Restart apache so it recogizes new module: `sudo service httpd restart` 
