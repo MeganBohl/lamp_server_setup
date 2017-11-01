@@ -164,7 +164,7 @@ wget http://wordpress.org/latest.tar.gz`
 ## Part VI Add Encryption with OpenSSL
 - Guide: https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7
 
-ssh megan@45.55.224.80 
+
     `sudo yum install httpd`
     `sudo systemctl enable httpd.service`
 - Install mod_ssl, an Apache module that provides support for SSL encryption, with the yum command:
