@@ -188,8 +188,8 @@ wget http://wordpress.org/latest.tar.gz`
     `/etc/httpd/conf.d/ssl.conf
     <VirtualHost _default_:443>
     . . .
-    DocumentRoot "/var/www/165.227.67.40.com/public_html"
-    ServerName www.165.227.67.40.com:443`
+    DocumentRoot "/var/www/html"
+    ServerName 165.227.67.40:443`
 
 - Next, find these and comment out:
 `# SSLProtocol all -SSLv2`
@@ -227,9 +227,18 @@ wget http://wordpress.org/latest.tar.gz`
     `sudo nano /etc/httpd/conf.d/non-ssl.conf`
     - redirect all traffic to be SSL encrypted, create and open a file ending in .conf in the ```/etc/httpd/conf.d directory:
 <VirtualHost *:80>
-        ServerName www.example.com
-        Redirect "/" "https://www.example.com/"```
+        ServerName 165.227.67.40
+        Redirect "/" "https://165.227.67.40/"```
+- check your configuration file for syntax errors by typing
+`sudo apachectl configtest` (Should receive a "syntax OK")
+    - had to fix extra commas added into config. files from pasted portion earlier
+- restart apache to apply changes
+ `sudo systemctl restart httpd.service`
 
+ - If iptables firewall running, a basic rule set, that adds HTTP and HTTPS:
+
+```sudo iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+    sudo iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT```
 
 
 - Create a final snapshot called WPwithEncryption
